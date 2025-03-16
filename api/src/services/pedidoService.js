@@ -23,12 +23,8 @@ class PedidoService {
     async createPedido(pedidoData) { 
         if (!pedidoData.revendaId) {
             throw new Error("ID da revenda é obrigatório");
-        }         
-        
-        if (!pedidoData.clienteId) {
-            throw new Error("ID do cliente é obrigatório");
-        }
-        
+        }        
+         
         if (!pedidoData.itens || !Array.isArray(pedidoData.itens) || pedidoData.itens.length === 0) {
             throw new Error("Pelo menos um item deve ser incluído no pedido");
         }
@@ -37,12 +33,7 @@ class PedidoService {
             const revenda = await this.revendaService.getRevendaById(parseInt(pedidoData.revendaId));
             if (!revenda) {
                 throw new Error(`Revenda com ID ${pedidoData.revendaId} não encontrada`);
-            }
- 
-            const cliente = await this.revendaService.validarClienteRevenda(
-                pedidoData.revendaId, 
-                pedidoData.clienteId
-            );
+            }           
  
             const itensProcessados = [];
             let valorTotal = 0;
@@ -73,12 +64,7 @@ class PedidoService {
             // Criar o pedido
             const novoPedido = {
                 id: this.nextId++,
-                revendaId: parseInt(pedidoData.revendaId),
-                cliente: {
-                    id: cliente.id,
-                    nome: cliente.nome,
-                    telefone: cliente.telefone
-                },
+                revendaId: parseInt(pedidoData.revendaId),              
                 itens: itensProcessados,
                 valorTotal,
                 status: "Recebido",
@@ -111,8 +97,7 @@ class PedidoService {
             ...this.pedidos[index],
             ...dadosAtualizados,
             id: this.pedidos[index].id, // Manter ID original
-            revendaId: this.pedidos[index].revendaId, // Não mudar revenda
-            cliente: this.pedidos[index].cliente, // Não mudar cliente
+            revendaId: this.pedidos[index].revendaId, // Não mudar revenda           
             data: this.pedidos[index].data, // Manter data original
             dataAtualizacao: new Date().toISOString() // Adicionar data de atualização
         };

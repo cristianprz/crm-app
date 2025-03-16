@@ -1,25 +1,34 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import { schemas, paths } from './swagger/index.js';
 
 const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API de Gerenciamento de Pedidos de Bebidas',
+      title: 'API de Gerenciamento de Distribuidora',
       version: '1.0.0',
-      description: 'API para gerenciar pedidos de bebidas',
+      description: 'API para gerenciamento de revendas e  pedidos ',
       contact: {
         name: 'API Support',
         email: 'suporte@exemplo.com'
-      }
+      },
+      license: {
+        name: 'MIT',
+        url: 'https://opensource.org/licenses/MIT',
+      },
     },
     servers: [
       {
         url: 'http://localhost:3000',
-        description: 'Servidor de Desenvolvimento'
-      }
+        description: 'Servidor de Desenvolvimento',
+      },
     ],
+    components: {
+      schemas
+    },
+    paths
   },
-  apis: ['./src/routes/*.js', './src/models/*.js'], // paths to files containing annotations
+  apis: [], 
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
