@@ -3,8 +3,9 @@ export const revendaSchema = {
   required: ['cnpj', 'razaoSocial', 'nomeFantasia', 'email', 'contatos', 'enderecosEntrega'],
   properties: {
     id: {
-      type: 'integer',
-      description: 'ID único da revenda',
+      type: 'string',
+      description: 'ID único da revenda (formato: rev_XXXXXXXXXXXX)',
+      example: 'rev_7f8d3a2e1b5c9f6d'
     },
     cnpj: {
       type: 'string',
@@ -79,7 +80,26 @@ export const revendaSchema = {
         },
       },
       description: 'Lista de endereços de entrega',
-    },  
+    },
+    clientes: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'string',
+            example: 'cli_a1b2c3d4e5f6g7h8'
+          },
+          nome: {
+            type: 'string',
+          },
+          telefone: {
+            type: 'string',
+          },
+        },
+      },
+      description: 'Lista de clientes da revenda',
+    },
   },
   example: {
     cnpj: "33.000.167/0001-01",

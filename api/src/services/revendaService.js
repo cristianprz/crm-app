@@ -1,20 +1,17 @@
 import Revenda from '../models/Revenda.js';
 import * as validacoes from '../utils/validacoes.js';
-import  revendasMock  from '../mocks/revendas.js';
+import revendasMock from '../mocks/revendas.js';
+import { generateRevendaId, generateClienteId } from '../utils/idGenerator.js';
 
 class RevendaService {
     constructor() {
-        this.revendas = [...revendasMock]; 
-        this.maxId = this.revendas.length > 0 ? 
-                     Math.max(...this.revendas.map(r => r.id)) : 0;
-        this.nextId = this.maxId + 1;
+        this.revendas = [...revendasMock];
     }
 
     async getRevendaById(id) {
-        return this.revendas.find(r => r.id === parseInt(id));
-    }  
+        return this.revendas.find(r => r.id === id);
+    }
 
- 
     validarRevenda(dadosRevenda) {
         const erros = [];
 
@@ -78,15 +75,17 @@ class RevendaService {
             throw new Error('CNPJ já cadastrado');
         }
 
-        const novaRevenda = new Revenda({
-            id: this.nextId++,
-            ...dadosRevenda
-        });
+        const novaRevenda = {
+            id: generateRevendaId(),
+            ...dadosRevenda,
+            clientes: [],
+            dataCriacao: new Date().toISOString(),
+            dataAtualizacao: new Date().toISOString()
+        };
 
         this.revendas.push(novaRevenda);
-        this.maxId = novaRevenda.id;
         return novaRevenda;
-    }
+    }     
 
     async listarRevendas() {
         return this.revendas;

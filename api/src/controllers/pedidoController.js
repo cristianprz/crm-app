@@ -51,6 +51,7 @@ class PedidoController {
             return res.status(201).json({
                 id: pedido.id,
                 cliente: pedido.cliente.nome,
+                revendaId: pedido.revendaId,
                 itens: pedido.itens.map(item => ({
                     produto: item.produto,
                     quantidade: item.quantidade

@@ -68,9 +68,10 @@ export const revendasPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer'
+            type: 'string'
           },
-          description: 'ID da revenda'
+          description: 'ID da revenda',
+          example: 'rev_7f8d3a2e1b5c9f6d'
         }
       ],
       responses: {
@@ -98,9 +99,10 @@ export const revendasPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer'
+            type: 'string'
           },
-          description: 'ID da revenda'
+          description: 'ID da revenda',
+          example: 'rev_7f8d3a2e1b5c9f6d'
         }
       ],
       requestBody: {
@@ -147,9 +149,10 @@ export const revendasPaths = {
           name: 'id',
           required: true,
           schema: {
-            type: 'integer'
+            type: 'string'
           },
-          description: 'ID da revenda'
+          description: 'ID da revenda',
+          example: 'rev_7f8d3a2e1b5c9f6d'
         }
       ],
       responses: {

@@ -1,9 +1,9 @@
 export const pedidosMock = [
     {
-        id: 1,
-        revendaId: 1,
+        id: "ped_a4b5c6d7e8f9g0h1",
+        revendaId: "rev_7f8d3a2e1b5c9f6d",
         cliente: {
-            id: 101,
+            id: "cli_a1b2c3d4e5f6g7h8",
             nome: "Restaurante Sabor Caseiro",
             telefone: "11999991111"
         },
@@ -28,10 +28,10 @@ export const pedidosMock = [
         data: "2025-03-15T10:30:00Z"
     },
     {
-        id: 2,
-        revendaId: 2,
+        id: "ped_i1j2k3l4m5n6o7p8",
+        revendaId: "rev_4d5e6f7g8h9i0j1",
         cliente: {
-            id: 201,
+            id: "cli_2p3q4r5s6t7u8v9",
             nome: "Botequim Carioca",
             telefone: "21977773333"
         },
@@ -56,10 +56,10 @@ export const pedidosMock = [
         data: "2025-03-16T09:15:00Z"
     },
     {
-        id: 3,
-        revendaId: 1,
+        id: "ped_q9r8s7t6u5v4w3x2",
+        revendaId: "rev_7f8d3a2e1b5c9f6d",
         cliente: {
-            id: 102,
+            id: "cli_9i8j7k6l5m4n3o2",
             nome: "Bar do Zé",
             telefone: "11988882222"
         },

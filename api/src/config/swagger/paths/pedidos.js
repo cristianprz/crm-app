@@ -1,32 +1,24 @@
-export const pedidosPaths = {   
-  '/api/pedidos/{id}': {
+export const pedidosPaths = {
+  '/api/pedidos': {
     get: {
-      summary: 'Busca um pedido pelo ID',
+      summary: 'Lista todos os pedidos',
       tags: ['Pedidos'],
-      parameters: [
-        {
-          in: 'path',
-          name: 'id',
-          required: true,
-          schema: {
-            type: 'integer'
-          },
-          description: 'ID do pedido'
-        }
-      ],
       responses: {
         200: {
-          description: 'Pedido encontrado',
+          description: 'Lista de pedidos',
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/Pedido'
+                type: 'array',
+                items: {
+                  $ref: '#/components/schemas/Pedido'
+                }
               }
             }
           }
         },
-        404: {
-          description: 'Pedido não encontrado'
+        500: {
+          description: 'Erro ao listar pedidos'
         }
       }
     }
@@ -45,12 +37,14 @@ export const pedidosPaths = {
               required: ['revendaId', 'itens'],
               properties: {
                 revendaId: {
-                  type: 'integer',
-                  description: 'ID da revenda'
+                  type: 'string',
+                  description: 'ID da revenda',
+                  example: 'rev_7f8d3a2e1b5c9f6d'
                 },
                 clienteId: {
-                  type: 'integer',
-                  description: 'ID do cliente (opcional se nome e telefone forem fornecidos)'
+                  type: 'string',
+                  description: 'ID do cliente (opcional se nome e telefone forem fornecidos)',
+                  example: 'cli_a1b2c3d4e5f6g7h8'
                 },
                 nome: {
                   type: 'string',
@@ -80,8 +74,8 @@ export const pedidosPaths = {
                 }
               },
               example: {
-                revendaId: 1,
-                clienteId: 101,
+                revendaId: "rev_7f8d3a2e1b5c9f6d",
+                clienteId: "cli_a1b2c3d4e5f6g7h8",
                 itens: [
                   { produtoId: 1, quantidade: 2 },
                   { produtoId: 5, quantidade: 3 }
@@ -100,12 +94,18 @@ export const pedidosPaths = {
                 type: 'object',
                 properties: {
                   id: {
-                    type: 'integer',
-                    description: 'ID do pedido'
+                    type: 'string',
+                    description: 'ID do pedido',
+                    example: 'ped_a4b5c6d7e8f9g0h1'
                   },
                   cliente: {
                     type: 'string',
                     description: 'Nome do cliente'
+                  },
+                  revendaId: {
+                    type: 'string',
+                    description: 'ID da revenda',
+                    example: 'rev_7f8d3a2e1b5c9f6d'
                   },
                   itens: {
                     type: 'array',
