@@ -20,64 +20,6 @@ class PedidoService {
         return this.pedidos.filter(p => p.revendaId === parseInt(revendaId));
     }
 
-    async createPedido(pedidoData) { 
-        if (!pedidoData.revendaId) {
-            throw new Error("ID da revenda é obrigatório");
-        }        
-         
-        if (!pedidoData.itens || !Array.isArray(pedidoData.itens) || pedidoData.itens.length === 0) {
-            throw new Error("Pelo menos um item deve ser incluído no pedido");
-        }
-        
-        try {            
-            const revenda = await this.revendaService.getRevendaById(parseInt(pedidoData.revendaId));
-            if (!revenda) {
-                throw new Error(`Revenda com ID ${pedidoData.revendaId} não encontrada`);
-            }           
- 
-            const itensProcessados = [];
-            let valorTotal = 0;
-
-            for (const item of pedidoData.itens) {
-                if (!item.produtoId || !item.quantidade || item.quantidade <= 0) {
-                    throw new Error("Cada item deve ter um produtoId e quantidade válida");
-                }
- 
-                const produto = this.produtos.find(p => p.id === parseInt(item.produtoId));
-                if (!produto) {
-                    throw new Error(`Produto com ID ${item.produtoId} não encontrado`);
-                }
- 
-                const valorItemTotal = produto.valorUnitario * item.quantidade;
-                const itemProcessado = {
-                    produtoId: produto.id,
-                    produto: produto.nome,
-                    quantidade: item.quantidade,
-                    valorUnitario: produto.valorUnitario,
-                    valorTotal: valorItemTotal
-                };
-                
-                itensProcessados.push(itemProcessado);
-                valorTotal += valorItemTotal;
-            }
-
-            // Criar o pedido
-            const novoPedido = {
-                id: this.nextId++,
-                revendaId: parseInt(pedidoData.revendaId),              
-                itens: itensProcessados,
-                valorTotal,
-                status: "Recebido",
-                data: new Date().toISOString()
-            };
-            
-            this.pedidos.push(novoPedido);
-            return novoPedido;
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async getPedidoById(id) {
         const pedido = this.pedidos.find(p => p.id === parseInt(id));
         if (!pedido) {
@@ -91,8 +33,7 @@ class PedidoService {
         if (index === -1) {
             throw new Error(`Pedido com ID ${id} não encontrado`);
         }
-        
-        // Não permite alterar dados fundamentais
+         
         const pedidoAtualizado = { 
             ...this.pedidos[index],
             ...dadosAtualizados,
@@ -128,6 +69,71 @@ class PedidoService {
     
     async getProdutos() {
         return this.produtos;
+    }
+
+    async criarPedidoCliente(dadosPedido) {
+        if (!dadosPedido.revendaId) {
+            throw new Error("ID da revenda é obrigatório");
+        }
+
+        if (!dadosPedido.cliente?.id) {
+            throw new Error("ID da cliente é obrigatório");
+        }
+        
+        
+        if (!dadosPedido.itens || !Array.isArray(dadosPedido.itens) || dadosPedido.itens.length === 0) {
+            throw new Error("Pelo menos um item deve ser incluído no pedido");
+        } 
+
+        const revenda = await this.revendaService.getRevendaById(parseInt(dadosPedido.revendaId));
+        if (!revenda) {
+            throw new Error(`Revenda com ID ${dadosPedido.revendaId} não encontrada`);
+        }
+          
+        let cliente = {
+            id: dadosPedido.cliente.id,  
+            nome: dadosPedido.cliente?.nome || "Cliente não identificado",
+            telefone: dadosPedido.cliente?.telefone || "Não informado"
+        };
+         
+        const itensProcessados = [];
+        let valorTotal = 0;
+        
+        for (const item of dadosPedido.itens) {
+            if (!item.produtoId || !item.quantidade || item.quantidade <= 0) {
+                throw new Error("Cada item deve ter um produtoId e quantidade válida");
+            }
+             
+            const produto = this.produtos.find(p => p.id === parseInt(item.produtoId));
+            if (!produto) {
+                throw new Error(`Produto com ID ${item.produtoId} não encontrado`);
+            }
+             
+            const valorItemTotal = produto.valorUnitario * item.quantidade;
+             
+            itensProcessados.push({
+                produtoId: produto.id,
+                produto: produto.nome,
+                quantidade: item.quantidade,
+                valorUnitario: produto.valorUnitario,
+                valorTotal: valorItemTotal
+            });
+            
+            valorTotal += valorItemTotal;
+        }
+         
+        const novoPedido = {
+            id: this.nextId++,
+            revendaId: parseInt(dadosPedido.revendaId),
+            cliente: cliente,
+            itens: itensProcessados,
+            valorTotal,
+            status: "Recebido",
+            data: new Date().toISOString()
+        };
+        
+        this.pedidos.push(novoPedido);
+        return novoPedido;
     }
 }
 

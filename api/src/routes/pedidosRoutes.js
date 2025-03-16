@@ -3,12 +3,10 @@ import PedidoController from '../controllers/pedidoController.js';
 
 const router = Router();
 const pedidoController = new PedidoController();
+ 
+router.get('/pedidos', pedidoController.getPedidos.bind(pedidoController)); 
 
-router.post('/pedidos', pedidoController.criarPedido.bind(pedidoController));
-router.get('/pedidos', pedidoController.getPedidos.bind(pedidoController));
-router.get('/pedidos/:id', pedidoController.getPedidos.bind(pedidoController));
-//router.put('/pedidos/:id', pedidoController.updatePedido.bind(pedidoController));
-//router.delete('/pedidos/:id', pedidoController.deletePedido.bind(pedidoController));
-//router.get('/pedidos/revenda/:revendaId', pedidoController.getPedidosByRevendaId.bind(pedidoController));
+ 
+router.post('/pedidos/cliente', pedidoController.criarPedidoCliente.bind(pedidoController));
 
 export default router;

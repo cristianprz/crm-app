@@ -1,7 +1,12 @@
 export const pedidosMock = [
     {
         id: 1,
-        revendaId: 1, 
+        revendaId: 1,
+        cliente: {
+            id: 101,
+            nome: "Restaurante Sabor Caseiro",
+            telefone: "11999991111"
+        },
         itens: [
             { 
                 produtoId: 1,
@@ -24,7 +29,12 @@ export const pedidosMock = [
     },
     {
         id: 2,
-        revendaId: 2, 
+        revendaId: 2,
+        cliente: {
+            id: 201,
+            nome: "Botequim Carioca",
+            telefone: "21977773333"
+        },
         itens: [
             { 
                 produtoId: 3,
@@ -47,7 +57,12 @@ export const pedidosMock = [
     },
     {
         id: 3,
-        revendaId: 1, 
+        revendaId: 1,
+        cliente: {
+            id: 102,
+            nome: "Bar do Zé",
+            telefone: "11988882222"
+        },
         itens: [
             { 
                 produtoId: 2,
