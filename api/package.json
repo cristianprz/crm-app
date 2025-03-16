@@ -1,5 +1,6 @@
 {
-  "name": "api",
+  "type": "commonjs",
+  "name": "crm-app",
   "version": "1.0.0",
   "description": "API CRM",
   "main": "src/server.js",
@@ -11,7 +12,8 @@
   },
   "dependencies": {
     "api": "file:",
-    "express": "^4.17.1"
+    "crm-app": "file:",
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
