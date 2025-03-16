@@ -1,12 +1,38 @@
 import Revenda from '../models/Revenda.js';
 import * as validacoes from '../utils/validacoes.js';
+import  revendasMock  from '../mocks/revendas.js';
 
 class RevendaService {
     constructor() {
-        this.revendas = [];
-        this.nextId = 1;
+        this.revendas = [...revendasMock]; 
+        this.nextId = this.revendas.length > 0 ? 
+                      Math.max(...this.revendas.map(r => r.id)) + 1 : 1;
+        this.nextClienteId = this.revendas.length > 0 ? 
+        Math.max(...this.revendas.map(p => p.id)) + 1 : 1;
     }
 
+    async getRevendaById(id) {
+        return this.revendas.find(r => r.id === parseInt(id));
+    }
+ 
+    async validarClienteRevenda(revendaId, clienteId) {
+        const revenda = await this.getRevendaById(parseInt(revendaId));
+        if (!revenda) {
+            throw new Error(`Revenda com ID ${revendaId} não encontrada`);
+        } 
+        if (!revenda.clientes || !Array.isArray(revenda.clientes)) {
+            throw new Error(`Revenda com ID ${revendaId} não possui clientes cadastrados`);
+        }
+
+        const cliente = revenda.clientes.find(c => c.id === parseInt(clienteId));
+        if (!cliente) {
+            throw new Error(`Cliente com ID ${clienteId} não pertence à revenda ${revendaId}`);
+        }
+        
+        return cliente;
+    }
+
+ 
     validarRevenda(dadosRevenda) {
         const erros = [];
 
