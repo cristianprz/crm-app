@@ -136,6 +136,9 @@ Os pedidos agrupados são uma característica chave do sistema, funcionando da s
 ### Revendas
 - `GET /api/revendas` - Lista todas as revendas (apenas para admin)
 - `GET /api/revendas/:id` - Obtém detalhes de uma revenda
+- `POST /api/revendas` - Cadastra uma revenda (apenas para admin)
+- `PUT /api/revendas` - Atualiza uma revenda (apenas para admin)
+- `DELETE /api/revendas/id` - Deleta uma revenda (apenas para admin)
 
 ### Pedidos
 - `GET /api/pedidos` - Lista pedidos da revenda autenticada
