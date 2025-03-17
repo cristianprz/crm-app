@@ -4,20 +4,10 @@ class PedidoController {
     constructor() { 
         this.pedidoService = new PedidoService();
     }
-
-    async criarPedido(req, res) {
-        try {
-            const pedidoData = req.body;
-            const novoPedido = await this.pedidoService.createPedido(pedidoData);
-            res.status(201).json(novoPedido);
-        } catch (error) {
-            res.status(500).json({ message: 'Erro ao criar pedido', error: error.message });
-        }
-    }
-
+ 
     async getPedidos(req, res) {
-        try {
-            const pedidos = await this.pedidoService.getPedidos();
+        try {  
+            const pedidos = await this.pedidoService.getPedidosByRevendaId(req.revendaId);
             res.status(200).json(pedidos);
         } catch (error) {
             res.status(500).json({ message: 'Erro ao consultar pedidos', error: error.message });
@@ -34,12 +24,6 @@ class PedidoController {
             
             if (!itens || !Array.isArray(itens) || itens.length === 0) {
                 return res.status(400).json({ error: 'Pedido deve conter pelo menos um item' });
-            }
-             
-            if (!clienteId && (!nome || !telefone)) {
-                return res.status(400).json({ 
-                    error: 'Identificação do cliente é obrigatória (clienteId ou nome e telefone)' 
-                });
             }
              
             const pedido = await this.pedidoService.criarPedidoCliente({

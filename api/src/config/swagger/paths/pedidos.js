@@ -3,6 +3,29 @@ export const pedidosPaths = {
     get: {
       summary: 'Lista todos os pedidos',
       tags: ['Pedidos'],
+      security: [{ apiKey: [] }],
+      parameters: [
+        {
+          name: 'x-api-key-revenda',
+          in: 'header',
+          required: true,
+          description: 'API Key da revenda para autenticação',
+          schema: {
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        },
+        {
+          name: 'x-api-key-cliente',
+          in: 'header',
+          required: true,
+          description: 'API Key do cliente para autenticação',
+          schema: {
+            type: 'string',
+            example: 'ak_client_resto_cafe_123'
+          }
+        }
+      ],
       responses: {
         200: {
           description: 'Lista de pedidos',
@@ -17,17 +40,43 @@ export const pedidosPaths = {
             }
           }
         },
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
+        },
         500: {
           description: 'Erro ao listar pedidos'
         }
       }
     }
-  }, 
+  },
   '/api/pedidos/cliente': {
     post: {
       summary: 'Criar pedido de cliente de revenda',
       description: 'Recebe pedidos dos clientes das revendas sem regras de pedido mínimo',
       tags: ['Pedidos de Clientes'],
+      security: [{ apiKey: [] }],
+      parameters: [
+        {
+          name: 'x-api-key-revenda',
+          in: 'header',
+          required: true,
+          description: 'API Key da revenda para autenticação',
+          schema: {
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        },
+        {
+          name: 'x-api-key-cliente',
+          in: 'header',
+          required: true,
+          description: 'API Key do cliente para autenticação',
+          schema: {
+            type: 'string',
+            example: 'ak_client_resto_cafe_123'
+          }
+        }
+      ],
       requestBody: {
         required: true,
         content: {
@@ -130,6 +179,9 @@ export const pedidosPaths = {
         },
         400: {
           description: 'Dados inválidos ou insuficientes'
+        },
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
         },
         404: {
           description: 'Revenda ou cliente não encontrado'
