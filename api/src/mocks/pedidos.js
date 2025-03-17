@@ -11,7 +11,7 @@ export const pedidosMock = [
             { 
                 produtoId: 1,
                 produto: "Suco de Laranja 1L", 
-                quantidade: 2, 
+                quantidade: 2000, 
                 valorUnitario: 8.90,
                 valorTotal: 17.80
             },
@@ -24,7 +24,7 @@ export const pedidosMock = [
             }
         ],
         valorTotal: 49.30,
-        status: "Entregue",
+        status: "Recebido",
         data: "2025-03-15T10:30:00Z"
     },
     {
@@ -52,7 +52,7 @@ export const pedidosMock = [
             }
         ],
         valorTotal: 42.80,
-        status: "Em preparo",
+        status: "Recebido",
         data: "2025-03-16T09:15:00Z"
     },
     {

@@ -2,6 +2,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import pedidosRoutes from './routes/pedidosRoutes.js';
 import revendasRoutes from './routes/revendasRoutes.js';
+import integracaoRoutes from './routes/integracaoRoutes.js';
 import errorHandler from './middleware/errorHandler.js';
 import swaggerSpec from './config/swagger.js';
  
@@ -12,8 +13,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/api',  pedidosRoutes);
-app.use('/api',  revendasRoutes);
+app.use('/api', pedidosRoutes);
+app.use('/api', revendasRoutes);
+app.use('/api', integracaoRoutes);
 
 app.use(errorHandler);
 

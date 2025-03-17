@@ -1,0 +1,72 @@
+[
+  {
+    "id": "pag_1742220521897850",
+    "revendaId": "rev_7f8d3a2e1b5c9f6d",
+    "dataCriacao": "2025-03-17T14:08:41.897Z",
+    "status": "pendente",
+    "tentativas": 0,
+    "pedidosIds": [
+      "ped_a4b5c6d7e8f9g0h1",
+      "ped_q9r8s7t6u5v4w3x2"
+    ],
+    "itensAgregados": [
+      {
+        "produtoId": 1,
+        "nome": "Suco de Laranja 1L",
+        "quantidade": 2000
+      },
+      {
+        "produtoId": 2,
+        "nome": "Suco de Uva Integral 500ml",
+        "quantidade": 4
+      },
+      {
+        "produtoId": 5,
+        "nome": "Suco Detox Verde 500ml",
+        "quantidade": 3
+      },
+      {
+        "produtoId": 6,
+        "nome": "Suco de Abacaxi com Hortelã 1L",
+        "quantidade": 2
+      }
+    ],
+    "quantidadeTotal": 2009,
+    "observacao": "Pedido agrupado de 2 pedidos"
+  },
+  {
+    "id": "pag_1742225081639411",
+    "revendaId": "rev_7f8d3a2e1b5c9f6d",
+    "dataCriacao": "2025-03-17T15:24:41.639Z",
+    "status": "pendente",
+    "tentativas": 0,
+    "pedidosIds": [
+      "ped_a4b5c6d7e8f9g0h1",
+      "ped_q9r8s7t6u5v4w3x2"
+    ],
+    "itensAgregados": [
+      {
+        "produtoId": 1,
+        "nome": "Suco de Laranja 1L",
+        "quantidade": 2000
+      },
+      {
+        "produtoId": 2,
+        "nome": "Suco de Uva Integral 500ml",
+        "quantidade": 4
+      },
+      {
+        "produtoId": 5,
+        "nome": "Suco Detox Verde 500ml",
+        "quantidade": 3
+      },
+      {
+        "produtoId": 6,
+        "nome": "Suco de Abacaxi com Hortelã 1L",
+        "quantidade": 2
+      }
+    ],
+    "quantidadeTotal": 2009,
+    "observacao": "Pedido agrupado de 2 pedidos"
+  }
+]

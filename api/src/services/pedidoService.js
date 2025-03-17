@@ -227,6 +227,55 @@ class PedidoService {
     async getProdutos() {
         return this.produtos;
     }
+
+    async getPedidosByRevendaAndStatus(revendaId, status) {
+        return this.pedidos.filter(p => p.revendaId === revendaId && p.status === status);
+    }
+
+    async getPedidosByRevendaIdAndStatus(revendaId, status) {
+        return this.pedidos.filter(p => p.revendaId === revendaId && p.status === status);
+    }
+
+    async atualizarStatusPedido(pedidoId, novoStatus, pedidoAgregadoId = null, pedidoFabricaId = null) {
+        const pedido = this.pedidos.find(p => p.id === pedidoId);
+        
+        if (!pedido) {
+            throw new Error(`Pedido ${pedidoId} não encontrado`);
+        }
+        
+        pedido.status = novoStatus;
+        pedido.dataAtualizacao = new Date().toISOString();
+        
+        if (pedidoAgregadoId) {
+            pedido.pedidoAgregadoId = pedidoAgregadoId;
+        }
+        
+        if (pedidoFabricaId) {
+            pedido.pedidoFabricaId = pedidoFabricaId;
+        }
+         
+        await this.salvarPedidos();
+        
+        return pedido;
+    }
+     
+    async salvarPedidos() {
+        try {
+            console.log(`[${new Date().toISOString()}] Salvando ${this.pedidos.length} pedidos...`);
+            
+            // Simulação de um delay de persistência (100ms)
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Em produção, aqui teria código para salvar em banco de dados
+            // Por exemplo: await db.collection('pedidos').insertMany(this.pedidos);
+            
+            console.log(`[${new Date().toISOString()}] Pedidos salvos com sucesso.`);
+            return true;
+        } catch (error) {
+            console.error(`[${new Date().toISOString()}] Erro ao salvar pedidos: ${error.message}`);
+            throw new Error(`Falha ao salvar pedidos: ${error.message}`);
+        }
+    }
 }
 
 export default PedidoService;

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "api": "file:",
+    "axios": "^1.8.3",
     "crm-app": "file:",
     "express": "^4.21.2",
     "swagger-jsdoc": "^6.2.8",
