@@ -6,7 +6,6 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "test": "jest",
     "lint": "eslint .",
     "format": "prettier --write .",
     "debug": "node --inspect src/server.js"
@@ -20,6 +19,8 @@
     "@opentelemetry/node": "^0.24.0",
     "@opentelemetry/sdk-node": "^0.200.0",
     "@opentelemetry/tracing": "^0.24.0",
+    "@opentelemetry/sdk-trace-node": "^0.35.0",
+    "@opentelemetry/sdk-trace-base": "^1.9.0",
     "api": "file:",
     "axios": "^1.8.3",
     "crm-app": "file:",
