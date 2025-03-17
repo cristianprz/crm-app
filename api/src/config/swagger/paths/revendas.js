@@ -3,12 +3,131 @@ export const revendasPaths = {
     post: {
       summary: 'Criar uma nova revenda',
       tags: ['Revendas'],
+      security: [{ apiKey: [] }],
+      parameters: [
+        {
+          name: 'x-api-key',
+          in: 'header',
+          required: true,
+          description: 'API Key da revenda para autenticação',
+          schema: {
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        }
+      ],
       requestBody: {
         required: true,
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Revenda'
+              type: 'object',
+              properties: {
+                cnpj: {
+                  type: 'string',
+                  description: 'CNPJ da revenda',
+                  example: '33.000.167/0001-01'
+                },
+                razaoSocial: {
+                  type: 'string',
+                  description: 'Razão social da revenda',
+                  example: 'Distribuidora de Bebidas Silva Ltda'
+                },
+                nomeFantasia: {
+                  type: 'string',
+                  description: 'Nome fantasia da revenda',
+                  example: 'Silva Bebidas'
+                },
+                email: {
+                  type: 'string',
+                  description: 'Email da revenda',
+                  example: 'contato@silvabebidas.com.br'
+                },
+                telefones: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                  },
+                  description: 'Lista de telefones da revenda',
+                  example: ['11998765432', '1133334444']
+                },
+                contatos: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      nome: {
+                        type: 'string',
+                      },
+                      telefone: {
+                        type: 'string',
+                      },
+                      email: {
+                        type: 'string',
+                      },
+                      principal: {
+                        type: 'boolean',
+                      },
+                    },
+                  },
+                  description: 'Lista de contatos da revenda',
+                  example: [
+                    {
+                      nome: "João Silva",
+                      telefone: "11998765432",
+                      email: "joao@silvabebidas.com.br",
+                      principal: true
+                    },
+                    {
+                      nome: "Maria Silva",
+                      telefone: "11987654321",
+                      email: "maria@silvabebidas.com.br",
+                      principal: false
+                    }
+                  ]
+                },
+                enderecosEntrega: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      logradouro: {
+                        type: 'string',
+                      },
+                      numero: {
+                        type: 'string',
+                      },
+                      complemento: {
+                        type: 'string',
+                      },
+                      bairro: {
+                        type: 'string',
+                      },
+                      cidade: {
+                        type: 'string',
+                      },
+                      estado: {
+                        type: 'string',
+                      },
+                      cep: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                  description: 'Lista de endereços de entrega',
+                  example: [
+                    {
+                      logradouro: "Rua das Bebidas",
+                      numero: "123",
+                      complemento: "Galpão 4",
+                      bairro: "Centro",
+                      cidade: "São Paulo",
+                      estado: "SP",
+                      cep: "01001-000"
+                    }
+                  ]
+                }
+              }
             }
           }
         }
@@ -19,16 +138,124 @@ export const revendasPaths = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/Revenda'
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string',
+                    description: 'ID da revenda',
+                    example: 'rev_7f8d3a2e1b5c9f6d'
+                  },
+                  cnpj: {
+                    type: 'string',
+                    description: 'CNPJ da revenda',
+                    example: '33.000.167/0001-01'
+                  },
+                  razaoSocial: {
+                    type: 'string',
+                    description: 'Razão social da revenda',
+                    example: 'Distribuidora de Bebidas Silva Ltda'
+                  },
+                  nomeFantasia: {
+                    type: 'string',
+                    description: 'Nome fantasia da revenda',
+                    example: 'Silva Bebidas'
+                  },
+                  email: {
+                    type: 'string',
+                    description: 'Email da revenda',
+                    example: 'contato@silvabebidas.com.br'
+                  },
+                  telefones: {
+                    type: 'array',
+                    items: {
+                      type: 'string',
+                    },
+                    description: 'Lista de telefones da revenda',
+                    example: ['11998765432', '1133334444']
+                  },
+                  contatos: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        nome: {
+                          type: 'string',
+                        },
+                        telefone: {
+                          type: 'string',
+                        },
+                        email: {
+                          type: 'string',
+                        },
+                        principal: {
+                          type: 'boolean',
+                        },
+                      },
+                    },
+                    description: 'Lista de contatos da revenda',
+                    example: [
+                      {
+                        nome: "João Silva",
+                        telefone: "11998765432",
+                        email: "joao@silvabebidas.com.br",
+                        principal: true
+                      },
+                      {
+                        nome: "Maria Silva",
+                        telefone: "11987654321",
+                        email: "maria@silvabebidas.com.br",
+                        principal: false
+                      }
+                    ]
+                  },
+                  enderecosEntrega: {
+                    type: 'array',
+                    items: {
+                      type: 'object',
+                      properties: {
+                        logradouro: {
+                          type: 'string',
+                        },
+                        numero: {
+                          type: 'string',
+                        },
+                        complemento: {
+                          type: 'string',
+                        },
+                        bairro: {
+                          type: 'string',
+                        },
+                        cidade: {
+                          type: 'string',
+                        },
+                        estado: {
+                          type: 'string',
+                        },
+                        cep: {
+                          type: 'string',
+                        },
+                      },
+                    },
+                    description: 'Lista de endereços de entrega',
+                    example: [
+                      {
+                        logradouro: "Rua das Bebidas",
+                        numero: "123",
+                        complemento: "Galpão 4",
+                        bairro: "Centro",
+                        cidade: "São Paulo",
+                        estado: "SP",
+                        cep: "01001-000"
+                      }
+                    ]
+                  }
+                }
               }
             }
           }
         },
-        400: {
-          description: 'Dados inválidos'
-        },
-        409: {
-          description: 'CNPJ já cadastrado'
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
         },
         500: {
           description: 'Erro ao criar revenda'
@@ -36,8 +263,21 @@ export const revendasPaths = {
       }
     },
     get: {
-      summary: 'Lista todas as revendas',
+      summary: 'Listar todas as revendas',
       tags: ['Revendas'],
+      security: [{ apiKey: [] }],
+      parameters: [
+        {
+          name: 'x-api-key',
+          in: 'header',
+          required: true,
+          description: 'API Key da revenda para autenticação',
+          schema: {
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        }
+      ],
       responses: {
         200: {
           description: 'Lista de revendas',
@@ -52,6 +292,9 @@ export const revendasPaths = {
             }
           }
         },
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
+        },
         500: {
           description: 'Erro ao listar revendas'
         }
@@ -60,23 +303,34 @@ export const revendasPaths = {
   },
   '/api/revendas/{id}': {
     get: {
-      summary: 'Busca uma revenda pelo ID',
+      summary: 'Buscar revenda por ID',
       tags: ['Revendas'],
+      security: [{ apiKey: [] }],
       parameters: [
         {
-          in: 'path',
-          name: 'id',
+          name: 'x-api-key',
+          in: 'header',
           required: true,
+          description: 'API Key da revenda para autenticação',
           schema: {
-            type: 'string'
-          },
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        },
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
           description: 'ID da revenda',
-          example: 'rev_7f8d3a2e1b5c9f6d'
+          schema: {
+            type: 'string',
+            example: 'rev_7f8d3a2e1b5c9f6d'
+          }
         }
       ],
       responses: {
         200: {
-          description: 'Revenda encontrada',
+          description: 'Dados da revenda',
           content: {
             'application/json': {
               schema: {
@@ -85,24 +339,41 @@ export const revendasPaths = {
             }
           }
         },
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
+        },
         404: {
           description: 'Revenda não encontrada'
+        },
+        500: {
+          description: 'Erro ao buscar revenda'
         }
       }
     },
     put: {
-      summary: 'Atualiza uma revenda',
+      summary: 'Atualizar revenda por ID',
       tags: ['Revendas'],
+      security: [{ apiKey: [] }],
       parameters: [
         {
-          in: 'path',
-          name: 'id',
+          name: 'x-api-key',
+          in: 'header',
           required: true,
+          description: 'API Key da revenda para autenticação',
           schema: {
-            type: 'string'
-          },
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        },
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
           description: 'ID da revenda',
-          example: 'rev_7f8d3a2e1b5c9f6d'
+          schema: {
+            type: 'string',
+            example: 'rev_7f8d3a2e1b5c9f6d'
+          }
         }
       ],
       requestBody: {
@@ -110,7 +381,113 @@ export const revendasPaths = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/Revenda'
+              type: 'object',
+              properties: {
+                cnpj: {
+                  type: 'string',
+                  description: 'CNPJ da revenda',
+                  example: '33.000.167/0001-01'
+                },
+                razaoSocial: {
+                  type: 'string',
+                  description: 'Razão social da revenda',
+                  example: 'Distribuidora de Bebidas Silva Ltda'
+                },
+                nomeFantasia: {
+                  type: 'string',
+                  description: 'Nome fantasia da revenda',
+                  example: 'Silva Bebidas'
+                },
+                email: {
+                  type: 'string',
+                  description: 'Email da revenda',
+                  example: 'contato@silvabebidas.com.br'
+                },
+                telefones: {
+                  type: 'array',
+                  items: {
+                    type: 'string',
+                  },
+                  description: 'Lista de telefones da revenda',
+                  example: ['11998765432', '1133334444']
+                },
+                contatos: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      nome: {
+                        type: 'string',
+                      },
+                      telefone: {
+                        type: 'string',
+                      },
+                      email: {
+                        type: 'string',
+                      },
+                      principal: {
+                        type: 'boolean',
+                      },
+                    },
+                  },
+                  description: 'Lista de contatos da revenda',
+                  example: [
+                    {
+                      nome: "João Silva",
+                      telefone: "11998765432",
+                      email: "joao@silvabebidas.com.br",
+                      principal: true
+                    },
+                    {
+                      nome: "Maria Silva",
+                      telefone: "11987654321",
+                      email: "maria@silvabebidas.com.br",
+                      principal: false
+                    }
+                  ]
+                },
+                enderecosEntrega: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      logradouro: {
+                        type: 'string',
+                      },
+                      numero: {
+                        type: 'string',
+                      },
+                      complemento: {
+                        type: 'string',
+                      },
+                      bairro: {
+                        type: 'string',
+                      },
+                      cidade: {
+                        type: 'string',
+                      },
+                      estado: {
+                        type: 'string',
+                      },
+                      cep: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                  description: 'Lista de endereços de entrega',
+                  example: [
+                    {
+                      logradouro: "Rua das Bebidas",
+                      numero: "123",
+                      complemento: "Galpão 4",
+                      bairro: "Centro",
+                      cidade: "São Paulo",
+                      estado: "SP",
+                      cep: "01001-000"
+                    }
+                  ]
+                }
+              }
             }
           }
         }
@@ -126,14 +503,11 @@ export const revendasPaths = {
             }
           }
         },
-        400: {
-          description: 'Dados inválidos'
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
         },
         404: {
           description: 'Revenda não encontrada'
-        },
-        409: {
-          description: 'CNPJ já cadastrado em outra revenda'
         },
         500: {
           description: 'Erro ao atualizar revenda'
@@ -141,26 +515,43 @@ export const revendasPaths = {
       }
     },
     delete: {
-      summary: 'Remove uma revenda',
+      summary: 'Excluir revenda por ID',
       tags: ['Revendas'],
+      security: [{ apiKey: [] }],
       parameters: [
         {
-          in: 'path',
-          name: 'id',
+          name: 'x-api-key',
+          in: 'header',
           required: true,
+          description: 'API Key da revenda para autenticação',
           schema: {
-            type: 'string'
-          },
+            type: 'string',
+            example: 'ak_north_123456789abcdef'
+          }
+        },
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
           description: 'ID da revenda',
-          example: 'rev_7f8d3a2e1b5c9f6d'
+          schema: {
+            type: 'string',
+            example: 'rev_7f8d3a2e1b5c9f6d'
+          }
         }
       ],
       responses: {
-        200: {
-          description: 'Revenda removida com sucesso'
+        204: {
+          description: 'Revenda excluída com sucesso'
+        },
+        401: {
+          description: 'Não autorizado - API Key inválida ou não fornecida'
         },
         404: {
           description: 'Revenda não encontrada'
+        },
+        500: {
+          description: 'Erro ao excluir revenda'
         }
       }
     }

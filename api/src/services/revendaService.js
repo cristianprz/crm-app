@@ -92,7 +92,7 @@ class RevendaService {
     }
 
     async buscarRevendaPorId(id) {
-        const revenda = this.revendas.find(r => r.id === parseInt(id));
+        const revenda = this.revendas.find(r => r.id === id);
         if (!revenda) {
             throw new Error('Revenda não encontrada');
         }
@@ -100,19 +100,19 @@ class RevendaService {
     }
 
     async atualizarRevenda(id, dadosRevenda) {
-        const index = this.revendas.findIndex(r => r.id === parseInt(id));
+        const index = this.revendas.findIndex(r => r.id === id);
         if (index === -1) {
             throw new Error('Revenda não encontrada');
         }
  
-        dadosRevenda.id = parseInt(id);
+        dadosRevenda.id = id;
         
         const erros = this.validarRevenda(dadosRevenda);
         if (erros.length > 0) {
             throw new Error(JSON.stringify(erros));
         }
  
-        const revendaExistente = this.revendas.find(r => r.cnpj === dadosRevenda.cnpj && r.id !== parseInt(id));
+        const revendaExistente = this.revendas.find(r => r.cnpj === dadosRevenda.cnpj && r.id !== id);
         if (revendaExistente) {
             throw new Error('CNPJ já cadastrado em outra revenda');
         }
@@ -128,7 +128,7 @@ class RevendaService {
     }
 
     async excluirRevenda(id) {
-        const index = this.revendas.findIndex(r => r.id === parseInt(id));
+        const index = this.revendas.findIndex(r => r.id === id);
         if (index === -1) {
             throw new Error('Revenda não encontrada');
         }

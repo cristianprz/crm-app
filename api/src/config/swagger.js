@@ -5,17 +5,9 @@ const swaggerOptions = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'API de Gerenciamento de Distribuidora',
+      title: 'API de Gerenciamento de Distribuidora de Sucos',
       version: '1.0.0',
-      description: 'API para gerenciamento de revendas e  pedidos ',
-      contact: {
-        name: 'API Support',
-        email: 'suporte@exemplo.com'
-      },
-      license: {
-        name: 'MIT',
-        url: 'https://opensource.org/licenses/MIT',
-      },
+      description: 'API para gerenciamento de revendas, clientes e pedidos de sucos',
     },
     servers: [
       {
@@ -24,11 +16,24 @@ const swaggerOptions = {
       },
     ],
     components: {
-      schemas
+      schemas,
+      securitySchemes: {
+        apiKey: {
+          type: 'apiKey',
+          in: 'header',
+          name: 'x-api-key',
+          description: 'API Key para autenticação'
+        }
+      }
     },
+    security: [
+      {
+        apiKey: []
+      }
+    ],
     paths
   },
-  apis: [], 
+  apis: [],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

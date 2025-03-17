@@ -36,8 +36,9 @@ class RevendaController {
 
     async listarRevendas(req, res) {
         try {
-            const revendas = await this.revendaService.listarRevendas();
-            res.status(200).json(revendas);
+            const revendaId = req.revendaId;
+            const revenda = await this.revendaService.buscarRevendaPorId(revendaId);
+            res.status(200).json([revenda]);
         } catch (error) {
             res.status(500).json({ message: 'Erro ao listar revendas', error: error.message });
         }
@@ -45,7 +46,11 @@ class RevendaController {
 
     async buscarRevendaPorId(req, res) {
         try {
-            const revenda = await this.revendaService.buscarRevendaPorId(req.params.id);
+            const revendaId = req.revendaId;
+            if (req.params.id !== revendaId) {
+                return res.status(403).json({ message: 'Acesso negado' });
+            }
+            const revenda = await this.revendaService.buscarRevendaPorId(revendaId);
             res.status(200).json(revenda);
         } catch (error) {
             res.status(404).json({ message: error.message });
@@ -54,8 +59,12 @@ class RevendaController {
 
     async atualizarRevenda(req, res) {
         try {
+            const revendaId = req.revendaId;
+            if (req.params.id !== revendaId) {
+                return res.status(403).json({ message: 'Acesso negado' });
+            }
             const dadosRevenda = req.body;
-            const revendaAtualizada = await this.revendaService.atualizarRevenda(req.params.id, dadosRevenda);
+            const revendaAtualizada = await this.revendaService.atualizarRevenda(revendaId, dadosRevenda);
             res.status(200).json(revendaAtualizada);
         } catch (error) {
             let mensagem = error.message;
@@ -86,7 +95,11 @@ class RevendaController {
 
     async excluirRevenda(req, res) {
         try {
-            const resultado = await this.revendaService.excluirRevenda(req.params.id);
+            const revendaId = req.revendaId;
+            if (req.params.id !== revendaId) {
+                return res.status(403).json({ message: 'Acesso negado' });
+            }
+            const resultado = await this.revendaService.excluirRevenda(revendaId);
             res.status(200).json(resultado);
         } catch (error) {
             res.status(404).json({ message: error.message });
