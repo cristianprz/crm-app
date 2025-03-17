@@ -1,73 +1,173 @@
-# Beverage Order API
+# CRM App - API de Gestão de Pedidos de Revendas
 
-This project is a Node.js API for managing beverage orders, built with Express. It follows best practices in architecture and includes a structured setup for controllers, routes, models, middleware, and utilities.
+Esta API gerencia pedidos de revendas para fábricas de produtos, integrando-se com sistemas da fábrica e agregando pedidos para processamento em lote. Implementa um sistema de observabilidade robusto e segue práticas modernas de arquitetura de software.
 
-## Features
+## Tecnologias Utilizadas
 
-- Create and manage beverage orders
-- Authentication middleware
-- Error handling middleware
-- Unit and integration tests
+- **Backend**: Node.js com Express
+- **Módulos**: ES Modules (ESM)
+- **Documentação**: Swagger UI
+- **Observabilidade**:
+  - Logs estruturados (Winston)
+  - Métricas (Prometheus)
+  - Health checks
+- **Formatação e Linting**: ESLint + Prettier
 
-## Technologies Used
-
-- Node.js
-- Express
-- ESLint
-- Prettier
-- Jest
-
-## Project Structure
+## Estrutura do Projeto
 
 ```
-beverage-order-api
-├── src
-│   ├── app.js                # Initializes the Express application
-│   ├── server.js             # Starts the server
-│   ├── controllers           # Contains controllers for handling requests
-│   ├── routes                # Defines API routes
-│   ├── models                # Contains data models
-│   ├── middleware            # Middleware for authentication and error handling
-│   ├── utils                 # Utility functions
-│   └── config                # Database configuration
-├── tests                     # Contains unit and integration tests
-├── .eslintrc.json            # ESLint configuration
-├── .prettierrc               # Prettier configuration
-├── jest.config.js            # Jest configuration
-├── package.json              # NPM configuration
-└── README.md                 # Project documentation
+crm-app/
+├── api/
+│   ├── src/
+│   │   ├── app.js                # Configuração do Express
+│   │   ├── server.js             # Inicialização do servidor
+│   │   ├── controllers/          # Controladores de rota
+│   │   │   ├── PedidosController.js
+│   │   │   ├── RevendasController.js
+│   │   │   └── IntegracaoController.js
+│   │   ├── routes/               # Definições de rotas
+│   │   │   ├── pedidosRoutes.js
+│   │   │   ├── revendasRoutes.js
+│   │   │   └── integracaoRoutes.js
+│   │   ├── services/             # Camada de serviços (lógica de negócio)
+│   │   │   ├── pedidoService.js
+│   │   │   ├── revendaService.js
+│   │   │   ├── PedidoAgregadoService.js 
+│   │   │   └── fabricaIntegrationService.js
+│   │   ├── middleware/           # Middlewares (autenticação, erros)
+│   │   │   ├── apiKeyMiddleware.js
+│   │   │   └── errorHandler.js
+│   │   ├── config/
+│   │   │   ├── logger.js         # Configuração de logs
+│   │   │   ├── swagger.js        # Configuração da documentação
+│   │   │   └── swagger/          # Definições de rotas no Swagger
+│   │   ├── mocks/                # Dados simulados para desenvolvimento
+│   │   └── utils/                # Funções utilitárias
+│   │       └── idGenerator.js
+│   ├── .eslintrc.js
+│   ├── .prettierrc
+│   ├── package.json
+│   └── README.md
 ```
 
-## Setup Instructions
+## Regras de Negócio
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   cd beverage-order-api
+### Revendas
+- Cada revenda possui uma API Key para autenticação
+- Revendas só podem acessar seus próprios dados e pedidos
+- Revendas podem criar, listar e cancelar pedidos
+
+### Pedidos
+- Pedidos passam pelos status: Recebido → Agrupado → Enviado → Processado/Falha
+- Pedidos podem ser cancelados apenas no status "Recebido"
+
+### Pedidos Agrupados
+Os pedidos agrupados são uma característica chave do sistema, funcionando da seguinte maneira:
+
+1. **Critérios para Agrupamento**:
+   - Somente pedidos com status "Recebido" são elegíveis
+   - Pedidos devem ser da mesma revenda
+   - Total mínimo de 1000 unidades necessário para agrupamento
+
+2. **Processo de Agrupamento**:
+   - Sistema identifica pedidos elegíveis da revenda
+   - Cria um objeto "pedidoAgregado" com IDs dos pedidos incluídos
+   - Calcula quantidade total e valor total
+   - Atualiza status dos pedidos originais
+
+3. **Integração com a Fábrica**:
+   - Pedidos agrupados são enviados para a fábrica
+   - Sistema implementa mecanismo de retry em caso de falha
+   - Status do pedido é atualizado conforme processamento
+
+4. **Rastreabilidade**:
+   - Cada pedido individual mantém referência ao pedido agrupado
+   - Pedido agrupado mantém referência ao ID na fábrica
+
+### Integração com Fábrica
+- API resiliente com mecanismo automático de retry
+- Backup dos pedidos antes do envio
+- Simulação de atrasos e falhas para testes de resiliência
+
+### Observabilidade
+- Logs estruturados para todas as operações
+- Métricas de desempenho via Prometheus
+- Health checks para monitoramento da disponibilidade
+
+## Instalação e Execução
+
+### Pré-requisitos
+- Node.js 18+ instalado
+- NPM 8+ instalado
+
+### Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seu-usuario/crm-app.git
+   cd crm-app/api
    ```
 
-2. Install dependencies:
-   ```
+2. Instale as dependências:
+   ```bash
    npm install
    ```
 
-3. Configure the database connection in `src/config/db.js`.
+### Execução
 
-4. Start the server:
-   ```
+1. Inicie a aplicação:
+   ```bash
    npm start
    ```
 
-5. Run tests:
+2. Para debug:
+   ```bash
+   npm run debug
    ```
-   npm test
-   ```
 
-## Usage
+3. A API estará disponível em: `http://localhost:3000`
+4. A documentação Swagger estará em: `http://localhost:3000/api-docs`
 
-- API endpoints for managing beverage orders can be accessed at the base URL after starting the server.
-- Refer to the routes defined in `src/routes` for specific endpoints and their usage.
+## Endpoints Principais
 
-## Contributing
+### Autenticação
+- Todas as rotas requerem cabeçalho `x-api-key` com API Key válida da revenda
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
+### Revendas
+- `GET /api/revendas` - Lista todas as revendas (apenas para admin)
+- `GET /api/revendas/:id` - Obtém detalhes de uma revenda
+
+### Pedidos
+- `GET /api/pedidos` - Lista pedidos da revenda autenticada
+- `POST /api/pedidos` - Cria novo pedido
+- `GET /api/pedidos/:id` - Obtém detalhes de um pedido
+- `PUT /api/pedidos/:id/cancelar` - Cancela um pedido
+
+### Integração com Fábrica
+- `POST /api/integracao/pedidos/agrupar` - Agrupa pedidos para envio
+- `POST /api/integracao/pedidos/enviar-fabrica` - Envia pedido agrupado para fábrica
+- `GET /api/integracao/pedidos/agregados` - Lista pedidos agrupados
+- `GET /api/integracao/pedidos/agregados/:id` - Obtém detalhes de pedido agrupado
+
+## Observabilidade
+
+1. Métricas Prometheus: `http://localhost:3000/metrics`
+2. Health Check: `http://localhost:3000/health`
+
+## Status do Projeto
+
+### Implementado
+- API completa com rotas para gerenciamento de pedidos e integração
+- Sistema de autenticação via API Key
+- Mecanismo de agrupamento de pedidos
+- Simulação de integração com fábrica
+- Observabilidade básica com logs estruturados e métricas
+
+### Em Desenvolvimento
+- **Testes automatizados**: Ainda não foram implementados testes automatizados. O plano futuro é adicionar testes unitários com Jest e testes de integração com Supertest.
+- Rastreamento completo com OpenTelemetry
+- Integração com Grafana para visualização de métricas
+
+## Licença
+
+ISC
