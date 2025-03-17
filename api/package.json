@@ -12,13 +12,23 @@
     "debug": "node --inspect src/server.js"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-prometheus": "^0.200.0",
+    "@opentelemetry/instrumentation": "^0.200.0",
+    "@opentelemetry/instrumentation-express": "^0.47.1",
+    "@opentelemetry/instrumentation-http": "^0.200.0",
+    "@opentelemetry/node": "^0.24.0",
+    "@opentelemetry/sdk-node": "^0.200.0",
+    "@opentelemetry/tracing": "^0.24.0",
     "api": "file:",
     "axios": "^1.8.3",
     "crm-app": "file:",
     "express": "^4.21.2",
+    "prom-client": "^15.1.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
