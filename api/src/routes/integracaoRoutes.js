@@ -12,7 +12,5 @@ router.post('/integracao/pedidos/enviar-fabrica', validateRevendaApiKey, integra
 router.get('/integracao/pedidos/agregados', validateRevendaApiKey, integracaoController.listarPedidosAgregados.bind(integracaoController));
  
 router.get('/integracao/pedidos/agregados/:id', validateRevendaApiKey, integracaoController.obterPedidoAgregado.bind(integracaoController));
- 
-router.post('/integracao/pedidos/reenviar-falhados', validateRevendaApiKey, integracaoController.reenviarPedidosFalhados.bind(integracaoController));
 
 export default router;

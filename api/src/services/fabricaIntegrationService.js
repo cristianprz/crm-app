@@ -19,7 +19,7 @@ class FabricaIntegrationService {
     });
   }
 
-  async enviarPedidoParaFabrica(pedidoAgregado) { 
+  async enviarPedidoParaFabrica(pedidoAgregado) {  
     await this.salvarBackupPedido(pedidoAgregado);
     
     let tentativa = 1;
@@ -30,58 +30,65 @@ class FabricaIntegrationService {
     while (tentativa <= this.maxRetries) {
       try {
         console.log(`Tentativa ${tentativa} de envio do pedido ${pedidoAgregado.id}`);
+         
+        await this.sleep(500 + Math.random() * 800);
+         
+        if (Math.random() < 0.2 && tentativa < this.maxRetries) {
+          throw new Error('Simulação de falha na API da fábrica');
+        }
+         
+        const pedidoFabricaId = `fab_${Date.now().toString().substring(5)}`;
+        console.log(`Pedido ${pedidoAgregado.id} simulado com sucesso para a fábrica`);
         
-        const response = await axios({
-          method: 'post',
-          url: `${this.apiUrl}/pedidos`,
-          data: pedidoFormatado,
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.apiKey}`
-          },
-          timeout: this.timeout
-        });
-        
-        console.log(`Pedido ${pedidoAgregado.id} enviado com sucesso para a fábrica`);
         return {
           success: true,
-          pedidoFabricaId: response.data.pedidoId,
-          mensagem: 'Pedido enviado com sucesso',
-          detalhes: response.data
+          pedidoFabricaId: pedidoFabricaId,
+          mensagem: 'Pedido enviado com sucesso (simulação)',
+          detalhes: {
+            pedidoId: pedidoFabricaId,
+            dataRecebimento: new Date().toISOString(),
+            statusPedido: 'RECEBIDO',
+            codigoIntegracao: `INT-${Math.floor(Math.random() * 10000)}`,
+            tempoProcessamento: `${Math.floor(Math.random() * 500)}ms`
+          }
         };
       } catch (err) {
         error = err;
         console.error(`Erro na tentativa ${tentativa}:`, err.message);
-         
-        if (this.isRecoverableError(err)) { 
-          const backoffTime = Math.pow(2, tentativa) * 1000;
-          await this.sleep(backoffTime);
-          tentativa++;
-        } else { 
-          break;
-        }
+          
+        const backoffTime = Math.pow(2, tentativa) * 1000;
+        console.log(`Aguardando ${backoffTime}ms antes da próxima tentativa...`);
+        await this.sleep(backoffTime);
+        tentativa++;
       }
     }
     
     return {
       success: false,
-      mensagem: 'Falha ao enviar pedido para a fábrica',
+      mensagem: 'Falha ao enviar pedido para a fábrica (simulação)',
       erro: error ? error.message : 'Erro desconhecido',
       tentativas: tentativa - 1
     };
   }
-  
-  isRecoverableError(error) {
+ 
+  async consultarStatusPedidoFabrica(pedidoFabricaId) { 
+    await this.sleep(300 + Math.random() * 500);
      
-    if (!error.response) {
-      return true;  
-    }
+    const statusOptions = ['RECEBIDO', 'EM_SEPARACAO', 'SEPARADO', 'DESPACHADO', 'ENTREGUE'];
+    const hashValue = pedidoFabricaId.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+    const statusIndex = hashValue % statusOptions.length;
     
-    const status = error.response.status;
-    return status === 429 || // Too Many Requests
-           status === 503 || // Service Unavailable
-           status === 502 || // Bad Gateway
-           status === 504;   // Gateway Timeout
+    return {
+      pedidoId: pedidoFabricaId,
+      status: statusOptions[statusIndex],
+      ultimaAtualizacao: new Date().toISOString(),
+      previsaoEntrega: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 dias a partir de agora
+    };
+  }
+  
+ 
+  isRecoverableError(error) {
+    return true; 
   }
   
   async salvarBackupPedido(pedidoAgregado) {

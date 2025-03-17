@@ -117,16 +117,10 @@ export const integracaoPaths = {
           'application/json': {
             schema: {
               type: 'object',
-              required: ['pedidoAgregadoId'],
-              properties: {
-                pedidoAgregadoId: {
-                  type: 'string',
-                  description: 'ID do pedido agregado',
-                  example: 'pag_a1b2c3d4e5f6'
-                },
+              properties: { 
                 revendaId: {
                   type: 'string',
-                  description: 'ID da revenda (opcional, obtido automaticamente da API Key)',
+                  description: 'ID da revenda (obtido automaticamente da API Key)',
                   example: 'rev_7f8d3a2e1b5c9f6d'
                 }
               }
@@ -354,100 +348,6 @@ export const integracaoPaths = {
         },
         404: {
           description: 'Pedido agregado não encontrado'
-        },
-        500: {
-          description: 'Erro interno do servidor'
-        }
-      }
-    }
-  },
-  '/api/integracao/pedidos/reenviar-falhados': {
-    post: {
-      summary: 'Reenviar pedidos que falharam no envio para a fábrica',
-      description: 'Identifica e reenvia todos os pedidos com status "Falha" da revenda autenticada.',
-      tags: ['Integração'],
-      security: [{ apiKey: [] }],
-      parameters: [
-        {
-          name: 'x-api-key',
-          in: 'header',
-          required: true,
-          description: 'API Key da revenda para autenticação',
-          schema: {
-            type: 'string',
-            example: 'ak_north_123456789abcdef'
-          }
-        }
-      ],
-      requestBody: {
-        required: false,
-        content: {
-          'application/json': {
-            schema: {
-              type: 'object',
-              properties: {
-                revendaId: {
-                  type: 'string',
-                  description: 'ID da revenda (opcional, obtido automaticamente da API Key)',
-                  example: 'rev_7f8d3a2e1b5c9f6d'
-                }
-              }
-            }
-          }
-        }
-      },
-      responses: {
-        200: {
-          description: 'Resultado do reenvio de pedidos falhados',
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  message: {
-                    type: 'string',
-                    example: 'Reenviados 2 de 3 pedidos'
-                  },
-                  revendaId: {
-                    type: 'string',
-                    example: 'rev_7f8d3a2e1b5c9f6d',
-                    description: 'ID da revenda autenticada'
-                  },
-                  quantidadeReenviada: {
-                    type: 'integer',
-                    example: 2
-                  },
-                  quantidadeTotal: {
-                    type: 'integer',
-                    example: 3
-                  },
-                  resultadosDetalhados: {
-                    type: 'array',
-                    items: {
-                      type: 'object',
-                      properties: {
-                        success: {
-                          type: 'boolean'
-                        },
-                        pedidoId: {
-                          type: 'string'
-                        },
-                        idPedidoFabrica: {
-                          type: 'string'
-                        },
-                        erro: {
-                          type: 'string'
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        401: {
-          description: 'Não autorizado - API Key inválida ou não fornecida'
         },
         500: {
           description: 'Erro interno do servidor'

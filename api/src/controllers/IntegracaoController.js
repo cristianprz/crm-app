@@ -51,8 +51,8 @@ class IntegracaoController {
   }
   
   async enviarPedidosParaFabrica(req, res) {
-    try { 
-      const revendaId = req.revendaId;
+    try {  
+      const revendaId = req.body.revendaId;
       
       if (!revendaId) {
         return res.status(400).json({
@@ -149,35 +149,8 @@ class IntegracaoController {
         detalhes: error.message
       });
     }
-  }
-   
-  async reenviarPedidosFalhados(req, res) {
-    try {
-      const revendaId = req.revendaId;
-      
-      if (!revendaId) {
-        return res.status(400).json({
-          error: 'revendaId não fornecido', 
-          message: 'É necessário fornecer o ID da revenda'
-        });
-      }
-      
-      const resultado = await this.pedidoAgregadoService.reenviarPedidosFalhados(revendaId);
-      
-      return res.status(200).json({
-        message: resultado.mensagem,
-        quantidadeReenviada: resultado.quantidadeReenviada,
-        quantidadeTotal: resultado.quantidadeTotal || 0,
-        resultadosDetalhados: resultado.resultados || []
-      });
-    } catch (error) {
-      console.error('Erro ao reenviar pedidos falhados:', error);
-      return res.status(500).json({
-        error: 'Erro interno',
-        message: error.message
-      });
-    }
-  }
+  }  
+ 
 }
 
 export default IntegracaoController;
